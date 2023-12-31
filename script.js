@@ -14,6 +14,7 @@ old.classList.add("current-Tab");
 
 //function to switch between tabs
 function switchTab(newTab){
+
     if(newTab != oldTab){ //checks that we are on usertab or searchtab
         oldTab.classList.remove("current-tab");
         oldTab = newTab;
@@ -23,6 +24,7 @@ function switchTab(newTab){
             userInfoContainer.classList.remove("active");
             grantAccessContainer.classList.remove("active");
             searchForm.classList.add("active");
+       
         }else{  //if visible then make it invisble and and make a function to your weather tab
                 //and check local storage first for coordinates,if we haves saved them there
             searchForm.classList.remove("active");
@@ -30,18 +32,36 @@ function switchTab(newTab){
             getFromSessionStorage();
         }
     } 
-
-
 }
+
 //this addevent listener will work when click on userTab and call switchTab function
 userTab.addEventListener("click",() => {
     switchTab(userTab);
-})
+});
 
 //this addevent listener will work when click on searchtab and call switchTab function
 searchTab.addEventListener("click", () => {
     switchTab(searchTab);
-})
+});
+
+//function to check if coordinates are already present in session storage
+function getFromSessionStorage(){
+    const localCoordinates = sessionStorage.getItem("user-coordinates");
+    if(!localCoordinates){ //If localcoordinates will not available then grant location acess page should be appear
+        grantAccessContainer.classList.add("active");
+   
+    }else{  //store cordinates and pass to the fetchUserWeatherInfo which will call the api based on cordinates.
+       const coordinates = Json.parse(localCoordinates);
+       fetchUserWeatherInfo(coordinates);
+    }
+}
+
+//function
+function fetchUserWeatherInfo(coordinates){
+    const {lat,lon} = coordinates;
+}
+
+
 
 
 
