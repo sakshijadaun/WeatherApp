@@ -9,7 +9,7 @@ const userInfoContainer = document.querySelector("user-info-cotainer");
 
 //Intially variables needed
 let oldTab = userTab;
-const API_Key = "";
+const API_KEY = "7c328f2c39ed0b62abe8ef94436c4d5a";
 old.classList.add("current-Tab");
 
 //function to switch between tabs
@@ -57,8 +57,27 @@ function getFromSessionStorage(){
 }
 
 //function
-function fetchUserWeatherInfo(coordinates){
+async function fetchUserWeatherInfo(coordinates){
     const {lat,lon} = coordinates;
+    grantAccessContainer.classList.remove("active"). //make grantAcessContainer invisible
+    loadingScreen.classList.add("active");   //Make loader visible
+
+
+    //API call
+    try{
+        const res = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_key}&units=metric`
+        );
+        const data = await response.json(); //convert into json object
+
+        loadingScreen.classList.remove("active");  //api gave data now remove loading Screen
+        userInfoContainer.classList.add("active"); //visible the weather container
+        
+        renderWeatherInfo(data);
+    }catch(err){
+        loadingScreen.classList.remove("active");
+        document.write("Unable to call API");
+    }
 }
 
 
