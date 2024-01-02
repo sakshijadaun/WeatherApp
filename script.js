@@ -76,7 +76,7 @@ async function fetchUserWeatherInfo(coordinates){
         renderWeatherInfo(data);
     }catch(err){
         loadingScreen.classList.remove("active");
-        console.log("Error Found",err);
+        alert("Error Found",err);
     }
 }
 
@@ -96,13 +96,37 @@ function renderWeatherInfo(weatherInfo){
     //fetch values from weatherInfo object and put it UI elements
     cityName.innerText = weatherInfo?.name;
     countryIcon.src = `https://flagcdn.com/144x108/${weatherInfo?.sys?.country.toLowerCase()}.png`;
-    desc.innerText = weatherInfo?.weather?.[0]?.description;
+    desc.innerText = weatherInfo?.weather?.[0]?.description;  //[0] used because weather is an array
     weatherIcon.src = `https://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`;
     temp.innerText = weatherInfo?.main?.temp;
     windspeed.innerText = weatherInfo?.wind?.speed;
     humidity.innerText = weatherInfo?.main?.humidity;
     cloudiness.innerText = weatherInfo?.clouds?.all;
 }
+
+//function to access current location
+function getLocation(){
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }else{
+        alert("No Support for geoLocation");
+    }
+}
+
+//function to get latitude and longitude and store in sessionStorage then call fetchUserWeatherInfo
+function showPosition(position){
+    const userCoordinates = {
+        lat : position.coords.latitude,
+        lon : position.coords.longitude,
+    }
+
+    sessionStorage.setItem("user-coordinates",JSON.stringify(userCoordinates));
+    fetchUserWeatherInfo(userCoordinates);
+}
+
+//event listener on grant acess button
+const grantAccessButton = document.querySelector("[data-grantAccess]");
+grantAccessButton.addEventListener("click",getLocation);
 
 
 
