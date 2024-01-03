@@ -10,7 +10,7 @@ const userInfoContainer = document.querySelector("user-info-cotainer");
 //Intially variables needed
 let oldTab = userTab;
 const API_KEY = "7c328f2c39ed0b62abe8ef94436c4d5a";
-old.classList.add("current-Tab");
+oldTab.classList.add("current-Tab");
 
 //function to switch between tabs
 function switchTab(newTab){
@@ -135,9 +135,10 @@ grantAccessButton.addEventListener("click",getLocation);
 //Evet Listener for search weather input button
 const searchInput = document.querySelector("[data-searchInput]");
 
+//event listener on search button  to search city and based on that call fetchSearchWeatherInfo()
 searchForm.addEventListener("submit",(e) => {
     e.preventDefault();
-    let cityName = searchInput.arialValueMax;
+    let cityName = searchInput.value;
 
     if(cityName === ""){
         return;
